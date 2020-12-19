@@ -20,9 +20,13 @@ package org.springframework.cloud.gateway.route;
 import reactor.core.publisher.Flux;
 
 /**
+ * 获取 RouteDefinition
  * @author Spencer Gibb
  */
 public interface RouteDefinitionLocator {
-
+	/**
+	 * 获取 RouteDefinition
+	 * @return
+	 */
 	Flux<RouteDefinition> getRouteDefinitions();
 }

@@ -30,12 +30,22 @@ import org.springframework.validation.annotation.Validated;
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 /**
+ * Predicate 定义
+ *
  * @author Spencer Gibb
  */
 @Validated
 public class PredicateDefinition {
+
+	/**
+	 * 定义了 Predicate 的名称，它们要符固定的命名规范，为对应的工厂名称。
+	 */
 	@NotNull
 	private String name;
+
+	/**
+	 * 一个 Map 类型的参数，构造 Predicate 使用到的键值对参数。
+	 */
 	private Map<String, String> args = new LinkedHashMap<>();
 
 	public PredicateDefinition() {
@@ -49,9 +59,9 @@ public class PredicateDefinition {
 		}
 		setName(text.substring(0, eqIdx));
 
-		String[] args = tokenizeToStringArray(text.substring(eqIdx+1), ",");
+		String[] args = tokenizeToStringArray(text.substring(eqIdx + 1), ",");
 
-		for (int i=0; i < args.length; i++) {
+		for (int i = 0; i < args.length; i++) {
 			this.args.put(NameUtils.generateName(i), args[i]);
 		}
 	}

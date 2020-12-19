@@ -33,6 +33,8 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 
 /**
+ * spring cloud 参数化配置
+ *
  * @author Spencer Gibb
  */
 @ConfigurationProperties("spring.cloud.gateway")
@@ -63,7 +65,7 @@ public class GatewayProperties {
 	public void setRoutes(List<RouteDefinition> routes) {
 		this.routes = routes;
 		if (routes != null && routes.size() > 0 && logger.isDebugEnabled()) {
-			logger.debug("Routes supplied from Gateway Properties: "+routes);
+			logger.debug("Routes supplied from Gateway Properties: " + routes);
 		}
 	}
 

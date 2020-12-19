@@ -17,13 +17,6 @@
 
 package org.springframework.cloud.gateway.route;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
@@ -48,11 +41,15 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.validation.Validator;
 import org.springframework.web.server.ServerWebExchange;
-
 import reactor.core.publisher.Flux;
 
+import java.util.*;
+
 /**
+ * RouteLocator 最主要的实现类，用于将 RouteDefinition 转换成 Route
+ * <p>
  * {@link RouteLocator} that loads routes from a {@link RouteDefinitionLocator}
+ *
  * @author Spencer Gibb
  */
 public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAware, ApplicationEventPublisherAware {
@@ -66,6 +63,13 @@ public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAwa
 	private BeanFactory beanFactory;
 	private ApplicationEventPublisher publisher;
 
+	/**
+	 * @param routeDefinitionLocator RouteDefinition Locator，一个 RouteDefinitionLocator 对象
+	 * @param predicates             predicates factories，Predicate 工厂列表，会被映射成 key 为 name, value 为 factory
+	 *                               的 Map。可以猜想出 gateway 是如何根据 PredicateDefinition 中定义的 name 来匹配到相对应的 factory 了
+	 * @param gatewayFilterFactories filter factories，Gateway Filter 工厂列表，同样会被映射成 key 为 name, value 为 factory 的 Map
+	 * @param gatewayProperties      gateway properties，外部化配置类
+	 */
 	public RouteDefinitionRouteLocator(RouteDefinitionLocator routeDefinitionLocator,
 									   List<RoutePredicateFactory> predicates,
 									   List<GatewayFilterFactory> gatewayFilterFactories,
@@ -93,7 +97,7 @@ public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAwa
 		predicates.forEach(factory -> {
 			String key = factory.name();
 			if (this.predicates.containsKey(key)) {
-				this.logger.warn("A RoutePredicateFactory named "+ key
+				this.logger.warn("A RoutePredicateFactory named " + key
 						+ " already exists, class: " + this.predicates.get(key)
 						+ ". It will be overwritten.");
 			}
@@ -160,8 +164,7 @@ public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAwa
 			}
 			if (gatewayFilter instanceof Ordered) {
 				ordered.add(gatewayFilter);
-			}
-			else {
+			} else {
 				ordered.add(new OrderedGatewayFilter(gatewayFilter, i + 1));
 			}
 		}
@@ -202,7 +205,7 @@ public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAwa
 	private AsyncPredicate<ServerWebExchange> lookup(RouteDefinition route, PredicateDefinition predicate) {
 		RoutePredicateFactory<Object> factory = this.predicates.get(predicate.getName());
 		if (factory == null) {
-            throw new IllegalArgumentException("Unable to find RoutePredicateFactory with name " + predicate.getName());
+			throw new IllegalArgumentException("Unable to find RoutePredicateFactory with name " + predicate.getName());
 		}
 		Map<String, String> args = predicate.getArgs();
 		if (logger.isDebugEnabled()) {
@@ -210,13 +213,13 @@ public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAwa
 					+ args + " to " + predicate.getName());
 		}
 
-        Map<String, Object> properties = factory.shortcutType().normalize(args, factory, this.parser, this.beanFactory);
-        Object config = factory.newConfig();
-        ConfigurationUtils.bind(config, properties,
-                factory.shortcutFieldPrefix(), predicate.getName(), validator);
-        if (this.publisher != null) {
-            this.publisher.publishEvent(new PredicateArgsEvent(this, route.getId(), properties));
-        }
-        return factory.applyAsync(config);
+		Map<String, Object> properties = factory.shortcutType().normalize(args, factory, this.parser, this.beanFactory);
+		Object config = factory.newConfig();
+		ConfigurationUtils.bind(config, properties,
+				factory.shortcutFieldPrefix(), predicate.getName(), validator);
+		if (this.publisher != null) {
+			this.publisher.publishEvent(new PredicateArgsEvent(this, route.getId(), properties));
+		}
+		return factory.applyAsync(config);
 	}
 }

@@ -18,6 +18,7 @@
 package org.springframework.cloud.gateway.route;
 
 import javax.validation.constraints.NotEmpty;
+
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.validation.annotation.Validated;
@@ -34,26 +35,47 @@ import java.util.UUID;
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 /**
+ * 对 Route 信息进行定义，最终会被 RouteLocator 解析成 Route
+ *
+ *
+ * RouteDefinition 中所定义的属性与 Route 本身是一一对应的
+ *
  * @author Spencer Gibb
  */
 @Validated
 public class RouteDefinition {
+
+	/**
+	 * 定义 Route 的 id，默认使用 UUID
+	 */
 	@NotEmpty
 	private String id = UUID.randomUUID().toString();
-
+	/**
+	 * 定义 Predicate
+	 */
 	@NotEmpty
 	@Valid
 	private List<PredicateDefinition> predicates = new ArrayList<>();
 
+	/**
+	 * 定义 Filter
+	 */
 	@Valid
 	private List<FilterDefinition> filters = new ArrayList<>();
 
+	/**
+	 * 定义目的地 URI
+	 */
 	@NotNull
 	private URI uri;
 
+	/**
+	 * 定义 Route 的序号
+	 */
 	private int order = 0;
 
-	public RouteDefinition() {}
+	public RouteDefinition() {
+	}
 
 	public RouteDefinition(String text) {
 		int eqIdx = text.indexOf('=');
@@ -64,11 +86,11 @@ public class RouteDefinition {
 
 		setId(text.substring(0, eqIdx));
 
-		String[] args = tokenizeToStringArray(text.substring(eqIdx+1), ",");
+		String[] args = tokenizeToStringArray(text.substring(eqIdx + 1), ",");
 
 		setUri(URI.create(args[0]));
 
-		for (int i=1; i < args.length; i++) {
+		for (int i = 1; i < args.length; i++) {
 			this.predicates.add(new PredicateDefinition(args[i]));
 		}
 	}

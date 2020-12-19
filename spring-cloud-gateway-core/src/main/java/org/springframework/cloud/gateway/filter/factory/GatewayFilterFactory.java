@@ -26,21 +26,29 @@ import org.springframework.cloud.gateway.support.ShortcutConfigurable;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 /**
+ * GatewayFilterFactory 职责就是生产 GatewayFilter
+ *
  * @author Spencer Gibb
  */
 @FunctionalInterface
+//同样继承了 ShortcutConfigurable 和 Configurable 接口，支持配置
 public interface GatewayFilterFactory<C> extends ShortcutConfigurable, Configurable<C> {
 
 	String NAME_KEY = "name";
 	String VALUE_KEY = "value";
 
-	// useful for javadsl
+	/**
+	 * 核心方法，用于生产 GatewayFilter，接收一个范型参数 config
+	 * @param consumer
+	 * @return
+	 */
 	default GatewayFilter apply(Consumer<C> consumer) {
 		C config = newConfig();
 		consumer.accept(config);
 		return apply(config);
 	}
 
+	@Override
 	default Class<C> getConfigClass() {
 		throw new UnsupportedOperationException("getConfigClass() not implemented");
 	}

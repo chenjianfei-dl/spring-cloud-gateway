@@ -29,12 +29,42 @@ import org.springframework.validation.annotation.Validated;
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 /**
+ * Filter 定义
+ *
+ *
+ *
+ * spring:
+ *   cloud:
+ *     gateway:
+ *       routes:
+ *       - id: add_request_header_route
+ *         uri: http://example.org
+ *         filters:
+ *         - AddRequestHeader=X-Request-Foo, Bar # ①
+ *
+ *	AddRequestHeader，对应 FilterDefinition 中的 name 属性。
+ *	AddRequestHeader为AddRequestHeaderGatewayFilterFactory 的类名前缀。
+ *
+ *
+ *  X-Request-Foo, Bar ，会被解析成 FilterDefinition 中的 Map 类型属性 args。
+ *  此处会被解析成两组键值对，以英文逗号将=后面的字符串分隔成数组，key是固定字符串 _genkey_ + 数组元素下标，
+ *  value为数组元素自身。
+ *
+ *
  * @author Spencer Gibb
  */
 @Validated
 public class FilterDefinition {
+
+	/**
+	 * 定义了 Filter 的名称，符合特定的命名规范，为对应的工厂名前缀
+	 */
 	@NotNull
 	private String name;
+
+	/**
+	 * 一个键值对参数用于构造 Filter 对象
+	 */
 	private Map<String, String> args = new LinkedHashMap<>();
 
 	public FilterDefinition() {
@@ -48,9 +78,9 @@ public class FilterDefinition {
 		}
 		setName(text.substring(0, eqIdx));
 
-		String[] args = tokenizeToStringArray(text.substring(eqIdx+1), ",");
+		String[] args = tokenizeToStringArray(text.substring(eqIdx + 1), ",");
 
-		for (int i=0; i < args.length; i++) {
+		for (int i = 0; i < args.length; i++) {
 			this.args.put(NameUtils.generateName(i), args[i]);
 		}
 	}

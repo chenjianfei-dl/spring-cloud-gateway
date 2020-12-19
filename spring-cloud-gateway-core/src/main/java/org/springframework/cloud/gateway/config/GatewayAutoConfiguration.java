@@ -138,6 +138,11 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
 import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool.PoolType.FIXED;
 
 /**
+ *
+ * Spring Cloud Gateway 核心配置类
+ *
+ * 网关初始化
+ *
  * @author Spencer Gibb
  */
 @Configuration
@@ -149,16 +154,20 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
 @ConditionalOnClass(DispatcherHandler.class)
 public class GatewayAutoConfiguration {
 
+	/**
+	 * 初始化 NettyConfiguration
+	 */
 	@Configuration
 	@ConditionalOnClass(HttpClient.class)
 	protected static class NettyConfiguration {
-		@Bean
+
+		@Bean // 1.2 该 HttpClient 使用 Netty 实现的 Client
 		@ConditionalOnMissingBean
 		public HttpClient httpClient(@Qualifier("nettyClientOptions") Consumer<? super HttpClientOptions.Builder> options) {
 			return HttpClient.create(options);
 		}
 
-		@Bean
+		@Bean // 1.1
 		public Consumer<? super HttpClientOptions.Builder> nettyClientOptions(HttpClientProperties properties) {
 			return opts -> {
 
@@ -234,19 +243,19 @@ public class GatewayAutoConfiguration {
 			return new HttpClientProperties();
 		}
 
-		@Bean
+		@Bean	// 1.3 使用 HttpClient Bean ，创建一个类型为NettyRoutingFilter 的 Bean 对象
 		public NettyRoutingFilter routingFilter(HttpClient httpClient,
 												ObjectProvider<List<HttpHeadersFilter>> headersFilters,
 												HttpClientProperties properties) {
 			return new NettyRoutingFilter(httpClient, headersFilters, properties);
 		}
 
-		@Bean
+		@Bean // 1.4
 		public NettyWriteResponseFilter nettyWriteResponseFilter(GatewayProperties properties) {
 			return new NettyWriteResponseFilter(properties.getStreamingMediaTypes());
 		}
 
-		@Bean
+		@Bean // 1.5 {@link org.springframework.cloud.gateway.filter.WebsocketRoutingFilter}
 		public ReactorNettyWebSocketClient reactorNettyWebSocketClient(@Qualifier("nettyClientOptions") Consumer<? super HttpClientOptions.Builder> options) {
 			return new ReactorNettyWebSocketClient(options);
 		}
@@ -270,25 +279,26 @@ public class GatewayAutoConfiguration {
 		return new RouteLocatorBuilder(context);
 	}
 
-	@Bean
+	@Bean //4.1 使用 GatewayProperties Bean ，创建一个类型为PropertiesRouteDefinitionLocator 的 Bean 对象
 	@ConditionalOnMissingBean
 	public PropertiesRouteDefinitionLocator propertiesRouteDefinitionLocator(GatewayProperties properties) {
 		return new PropertiesRouteDefinitionLocator(properties);
 	}
 
-	@Bean
+
+	@Bean //4.2 创建一个类型为InMemoryRouteDefinitionRepository 的 Bean 对象
 	@ConditionalOnMissingBean(RouteDefinitionRepository.class)
 	public InMemoryRouteDefinitionRepository inMemoryRouteDefinitionRepository() {
 		return new InMemoryRouteDefinitionRepository();
 	}
 
-	@Bean
-	@Primary
+	@Bean //4.3 使用上面创建的 RouteDefinitionLocator 的 Bean 对象们，创建一个类型为RouteDefinitionLocator  的 Bean 对象
+	@Primary // 优先被注入
 	public RouteDefinitionLocator routeDefinitionLocator(List<RouteDefinitionLocator> routeDefinitionLocators) {
 		return new CompositeRouteDefinitionLocator(Flux.fromIterable(routeDefinitionLocators));
 	}
 
-	@Bean
+	@Bean // 4.4
 	public RouteLocator routeDefinitionRouteLocator(GatewayProperties properties,
 												   List<GatewayFilterFactory> GatewayFilters,
 												   List<RoutePredicateFactory> predicates,
@@ -296,7 +306,7 @@ public class GatewayAutoConfiguration {
 		return new RouteDefinitionRouteLocator(routeDefinitionLocator, predicates, GatewayFilters, properties);
 	}
 
-	@Bean
+	@Bean // 4.5
 	@Primary
 	//TODO: property to disable composite?
 	public RouteLocator cachedCompositeRouteLocator(List<RouteLocator> routeLocators) {
@@ -308,16 +318,33 @@ public class GatewayAutoConfiguration {
 		return new RouteRefreshListener(publisher);
 	}
 
-	@Bean
+	//当所有 org.springframework.cloud.gateway.filter.GlobalFilter 初始化完成时
+	// ( 包括上面的 NettyRoutingFilter / NettyWriteResponseFilter )，
+	// 创建一个类型为 org.springframework.cloud.gateway.handler.FilteringWebHandler 的 Bean 对象
+	@Bean //2.6
 	public FilteringWebHandler filteringWebHandler(List<GlobalFilter> globalFilters) {
 		return new FilteringWebHandler(globalFilters);
 	}
 
+	/**
+	 * 全局跨域属性
+	 *
+	 * @return
+	 */
 	@Bean
 	public GlobalCorsProperties globalCorsProperties() {
 		return new GlobalCorsProperties();
 	}
-	
+
+	/**
+	 * 创建一个类型为 RoutePredicateHandlerMapping 的 Bean 对象，
+	 * 用于查找匹配到 Route ，并进行处理
+	 * @param webHandler
+	 * @param routeLocator
+	 * @param globalCorsProperties
+	 * @param environment
+	 * @return
+	 */
 	@Bean
 	public RoutePredicateHandlerMapping routePredicateHandlerMapping(
 			FilteringWebHandler webHandler, RouteLocator routeLocator,
@@ -328,7 +355,7 @@ public class GatewayAutoConfiguration {
 
 	// ConfigurationProperty beans
 
-	@Bean
+	@Bean //2.7 用于加载配置文件配置的 RouteDefinition / FilterDefinition
 	public GatewayProperties gatewayProperties() {
 		return new GatewayProperties();
 	}
@@ -340,6 +367,14 @@ public class GatewayAutoConfiguration {
 
 	// HttpHeaderFilter beans
 
+	/**
+	 *
+	 * 通过 spring.cloud.gateway.enabled 配置网关的开启与关闭
+	 * matchIfMissing = true => 网关默认开启。
+	 *
+	 *
+	 * @return
+	 */
 	@Bean
 	@ConditionalOnProperty(name = "spring.cloud.gateway.forwarded.enabled", matchIfMissing = true)
 	public ForwardedHeadersFilter forwardedHeadersFilter() {
@@ -357,19 +392,19 @@ public class GatewayAutoConfiguration {
 		return new XForwardedHeadersFilter();
 	}
 
-	// GlobalFilter beans
+	// GlobalFilter beans ----org.springframework.cloud.gateway.filter
 	
 	@Bean
 	public AdaptCachedBodyGlobalFilter adaptCachedBodyGlobalFilter() {
 		return new AdaptCachedBodyGlobalFilter();
 	}
 
-	@Bean
+	@Bean //2.1
 	public RouteToRequestUrlFilter routeToRequestUrlFilter() {
 		return new RouteToRequestUrlFilter();
 	}
 
-	@Bean
+	@Bean //2.2
 	@ConditionalOnBean(DispatcherHandler.class)
 	public ForwardRoutingFilter forwardRoutingFilter(ObjectProvider<DispatcherHandler> dispatcherHandler) {
 		return new ForwardRoutingFilter(dispatcherHandler);
@@ -380,12 +415,12 @@ public class GatewayAutoConfiguration {
 		return new ForwardPathFilter();
 	}
 
-	@Bean
+	@Bean //2.3
 	public WebSocketService webSocketService() {
 		return new HandshakeWebSocketService();
 	}
 
-	@Bean
+	@Bean //2.4
 	public WebsocketRoutingFilter websocketRoutingFilter(WebSocketClient webSocketClient,
 														 WebSocketService webSocketService,
 														 ObjectProvider<List<HttpHeadersFilter>> headersFilters) {
@@ -409,7 +444,10 @@ public class GatewayAutoConfiguration {
 		return new WebClientWriteResponseFilter();
 	}*/
 
-	// Predicate Factory beans
+
+
+
+	// Predicate Factory beans ----org.springframework.cloud.gateway.handler.predicate
 
 	@Bean
 	public AfterRoutePredicateFactory afterRoutePredicateFactory() {

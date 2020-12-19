@@ -25,6 +25,9 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.validation.Validator;
 import org.springframework.web.reactive.DispatcherHandler;
 
+/**
+ * 初始化 RedisRateLimiter
+ */
 @Configuration
 @AutoConfigureAfter(RedisReactiveAutoConfiguration.class)
 @AutoConfigureBefore(GatewayAutoConfiguration.class)
