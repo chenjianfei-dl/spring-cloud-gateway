@@ -31,6 +31,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.DispatcherHandler;
 
+/**
+ * Gateway metric auto configuration
+ *
+ */
 @Configuration
 @ConditionalOnProperty(name = "spring.cloud.gateway.enabled", matchIfMissing = true)
 @AutoConfigureBefore(HttpHandlerAutoConfiguration.class)
@@ -38,6 +42,7 @@ import org.springframework.web.reactive.DispatcherHandler;
 		CompositeMeterRegistryAutoConfiguration.class })
 @ConditionalOnClass({ DispatcherHandler.class, MeterRegistry.class, MetricsAutoConfiguration.class})
 public class GatewayMetricsAutoConfiguration {
+
 	@Bean
 	@ConditionalOnBean(MeterRegistry.class)
 	@ConditionalOnProperty(name = "spring.cloud.gateway.metrics.enabled", matchIfMissing = true)

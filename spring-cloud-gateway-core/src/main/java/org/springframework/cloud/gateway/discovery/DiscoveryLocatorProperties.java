@@ -26,10 +26,15 @@ import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.core.style.ToStringCreator;
 
+/**
+ * 服务发现相关配置
+ */
 @ConfigurationProperties("spring.cloud.gateway.discovery.locator")
 public class DiscoveryLocatorProperties {
 
-	/** Flag that enables DiscoveryClient gateway integration */
+	/**
+	 * Flag that enables DiscoveryClient gateway integration
+	 */
 	private boolean enabled = false;
 
 	/**
@@ -44,7 +49,9 @@ public class DiscoveryLocatorProperties {
 	 */
 	private String includeExpression = "true";
 
-	/** SpEL expression that create the uri for each route, defaults to: 'lb://'+serviceId */
+	/**
+	 * SpEL expression that create the uri for each route, defaults to: 'lb://'+serviceId
+	 */
 	private String urlExpression = "'lb://'+serviceId";
 
 	/**

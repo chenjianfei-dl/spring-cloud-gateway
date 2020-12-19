@@ -58,14 +58,40 @@ import reactor.core.publisher.Mono;
 public class GatewayControllerEndpoint implements ApplicationEventPublisherAware {
 
 	private static final Log log = LogFactory.getLog(GatewayControllerEndpoint.class);
-
-	private RouteDefinitionLocator routeDefinitionLocator;
-	private List<GlobalFilter> globalFilters;
-	private List<GatewayFilterFactory> GatewayFilters;
-	private RouteDefinitionWriter routeDefinitionWriter;
-	private RouteLocator routeLocator;
+	/**
+	 * routeDefinitionLocator
+	 */
+	private final RouteDefinitionLocator routeDefinitionLocator;
+	/**
+	 * globalFilters
+	 */
+	private final List<GlobalFilter> globalFilters;
+	/**
+	 * GatewayFilters
+	 */
+	private final List<GatewayFilterFactory> GatewayFilters;
+	/**
+	 * routeDefinitionWriter
+	 */
+	private final RouteDefinitionWriter routeDefinitionWriter;
+	/**
+	 * routeLocator
+	 */
+	private final RouteLocator routeLocator;
+	/**
+	 * publisher
+	 */
 	private ApplicationEventPublisher publisher;
 
+	/**
+	 * GatewayControllerEndpoint
+	 *
+	 * @param routeDefinitionLocator
+	 * @param globalFilters
+	 * @param GatewayFilters
+	 * @param routeDefinitionWriter
+	 * @param routeLocator
+	 */
 	public GatewayControllerEndpoint(RouteDefinitionLocator routeDefinitionLocator, List<GlobalFilter> globalFilters,
 									 List<GatewayFilterFactory> GatewayFilters, RouteDefinitionWriter routeDefinitionWriter,
 									 RouteLocator routeLocator) {
