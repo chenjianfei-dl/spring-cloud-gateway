@@ -22,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 
 /**
  * https://blog.appcanary.com/2017/http-security-headers.html
+ *
  * @author Spencer Gibb
  */
 public class SecureHeadersGatewayFilterFactory extends AbstractGatewayFilterFactory {

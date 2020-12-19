@@ -43,7 +43,7 @@ public class RemoveHopByHopHeadersFilter implements HttpHeadersFilter, Ordered {
 					// these two are not listed in https://tools.ietf.org/html/draft-ietf-httpbis-p1-messaging-14#section-7.1.3
 					//"proxy-connection",
 					// "content-length",
-					));
+			));
 
 	private int order = Ordered.LOWEST_PRECEDENCE;
 
@@ -69,7 +69,7 @@ public class RemoveHopByHopHeadersFilter implements HttpHeadersFilter, Ordered {
 	@Override
 	public HttpHeaders filter(HttpHeaders input, ServerWebExchange exchange) {
 		HttpHeaders filtered = new HttpHeaders();
-		
+
 		input.entrySet().stream()
 				.filter(entry -> !this.headers.contains(entry.getKey().toLowerCase()))
 				.forEach(entry -> filtered.addAll(entry.getKey(), entry.getValue()));
@@ -77,7 +77,7 @@ public class RemoveHopByHopHeadersFilter implements HttpHeadersFilter, Ordered {
 		return filtered;
 	}
 
-	@Override 
+	@Override
 	public boolean supports(Type type) {
 		return type.equals(Type.REQUEST) ||
 				type.equals(Type.RESPONSE);

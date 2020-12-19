@@ -42,10 +42,12 @@ public class BodyInserterContext implements BodyInserter.Context {
 	public List<HttpMessageWriter<?>> messageWriters() {
 		return exchangeStrategies.messageWriters();
 	}
+
 	@Override
 	public Optional<ServerHttpRequest> serverRequest() {
 		return Optional.empty();
 	}
+
 	@Override
 	public Map<String, Object> hints() {
 		return Collections.emptyMap(); //TODO: support hints

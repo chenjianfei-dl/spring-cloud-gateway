@@ -42,7 +42,7 @@ public class HttpMessageWriterResponse implements ServerHttpResponse {
 
 	private Publisher<? extends DataBuffer> body;
 
-    public HttpMessageWriterResponse(DataBufferFactory dataBufferFactory) {
+	public HttpMessageWriterResponse(DataBufferFactory dataBufferFactory) {
 		this.dataBufferFactory = dataBufferFactory;
 	}
 
@@ -52,21 +52,21 @@ public class HttpMessageWriterResponse implements ServerHttpResponse {
 	}
 
 	@Override
-    public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
-        this.body = body;
-        return Mono.empty();
-    }
+	public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
+		this.body = body;
+		return Mono.empty();
+	}
 
-    @Override
-    public Mono<Void> writeAndFlushWith(Publisher<? extends Publisher<? extends DataBuffer>> body) {
-    	//TODO: is this kosher?
+	@Override
+	public Mono<Void> writeAndFlushWith(Publisher<? extends Publisher<? extends DataBuffer>> body) {
+		//TODO: is this kosher?
 		return writeWith(Flux.from(body)
-						.flatMapSequential(p -> p));
-    }
+				.flatMapSequential(p -> p));
+	}
 
-    public Publisher<? extends DataBuffer> getBody() {
-        return body;
-    }
+	public Publisher<? extends DataBuffer> getBody() {
+		return body;
+	}
 
 	@Override
 	public boolean setStatusCode(HttpStatus status) {

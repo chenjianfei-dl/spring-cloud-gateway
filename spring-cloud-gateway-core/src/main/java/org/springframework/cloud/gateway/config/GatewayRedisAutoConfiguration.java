@@ -49,7 +49,7 @@ class GatewayRedisAutoConfiguration {
 	public ReactiveRedisTemplate<String, String> stringReactiveRedisTemplate(
 			ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
 		RedisSerializer<String> serializer = new StringRedisSerializer();
-		RedisSerializationContext<String , String> serializationContext = RedisSerializationContext
+		RedisSerializationContext<String, String> serializationContext = RedisSerializationContext
 				.<String, String>newSerializationContext()
 				.key(serializer)
 				.value(serializer)

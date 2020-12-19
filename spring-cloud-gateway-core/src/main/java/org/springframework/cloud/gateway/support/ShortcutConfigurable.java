@@ -108,6 +108,7 @@ public interface ShortcutConfigurable {
 
 	/**
 	 * Returns hints about the number of args and the order for shortcut parsing.
+	 *
 	 * @return
 	 */
 	default List<String> shortcutFieldOrder() {

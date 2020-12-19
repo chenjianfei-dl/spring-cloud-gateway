@@ -35,7 +35,7 @@ public abstract class ConfigurationUtils {
 		Object toBind = getTargetObject(o);
 
 		new Binder(new MapConfigurationPropertySource(properties))
-                .bind(configurationPropertyName, Bindable.ofInstance(toBind));
+				.bind(configurationPropertyName, Bindable.ofInstance(toBind));
 
 		if (validator != null) {
 			BindingResult errors = new BeanPropertyBindingResult(toBind, bindingName);
@@ -52,8 +52,7 @@ public abstract class ConfigurationUtils {
 			if (AopUtils.isAopProxy(candidate) && (candidate instanceof Advised)) {
 				return (T) ((Advised) candidate).getTargetSource().getTarget();
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Failed to unwrap proxied object", ex);
 		}
 		return (T) candidate;

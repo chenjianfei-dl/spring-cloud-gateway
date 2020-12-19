@@ -33,13 +33,12 @@ public class RequestHeaderToRequestUriGatewayFilterFactory extends
 
 	@Override
 	protected Optional<URI> determineRequestUri(ServerWebExchange exchange,
-			NameConfig config) {
+												NameConfig config) {
 		String requestUrl = exchange.getRequest().getHeaders().getFirst(config.getName());
 		return Optional.ofNullable(requestUrl).map(url -> {
 			try {
 				return new URL(url).toURI();
-			}
-			catch (MalformedURLException | URISyntaxException e) {
+			} catch (MalformedURLException | URISyntaxException e) {
 				log.info("Request url is invalid : url={}, error={}", requestUrl,
 						e.getMessage());
 				return null;

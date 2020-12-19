@@ -50,6 +50,7 @@ public class CachingRouteLocator implements RouteLocator {
 
 	/**
 	 * Clears the routes cache
+	 *
 	 * @return routes flux
 	 */
 	public Flux<Route> refresh() {
@@ -58,7 +59,7 @@ public class CachingRouteLocator implements RouteLocator {
 	}
 
 	@EventListener(RefreshRoutesEvent.class)
-	/* for testing */ void handleRefresh() {
+		/* for testing */ void handleRefresh() {
 		refresh();
 	}
 }

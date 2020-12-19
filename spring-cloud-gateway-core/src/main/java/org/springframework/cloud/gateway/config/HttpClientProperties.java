@@ -36,25 +36,35 @@ import java.util.List;
 
 /**
  * Http Client 配置
- *
+ * <p>
  * Configuration properties for the Netty {@link reactor.ipc.netty.http.client.HttpClient}
  */
 @ConfigurationProperties("spring.cloud.gateway.httpclient")
 public class HttpClientProperties {
 
-	/** The connect timeout in millis, the default is 45s. */
+	/**
+	 * The connect timeout in millis, the default is 45s.
+	 */
 	private Integer connectTimeout;
 
-	/** The response timeout. */
+	/**
+	 * The response timeout.
+	 */
 	private Duration responseTimeout;
 
-	/** Pool configuration for Netty HttpClient */
+	/**
+	 * Pool configuration for Netty HttpClient
+	 */
 	private Pool pool = new Pool();
 
-	/** Proxy configuration for Netty HttpClient */
+	/**
+	 * Proxy configuration for Netty HttpClient
+	 */
 	private Proxy proxy = new Proxy();
 
-	/** SSL configuration for Netty HttpClient */
+	/**
+	 * SSL configuration for Netty HttpClient
+	 */
 	private Ssl ssl = new Ssl();
 
 	public Integer getConnectTimeout() {
@@ -99,18 +109,26 @@ public class HttpClientProperties {
 
 	public static class Pool {
 
-		public enum PoolType { ELASTIC, FIXED, DISABLED }
+		public enum PoolType {ELASTIC, FIXED, DISABLED}
 
-		/** Type of pool for HttpClient to use, defaults to ELASTIC. */
+		/**
+		 * Type of pool for HttpClient to use, defaults to ELASTIC.
+		 */
 		private PoolType type = PoolType.ELASTIC;
 
-		/** The channel pool map name, defaults to proxy. */
+		/**
+		 * The channel pool map name, defaults to proxy.
+		 */
 		private String name = "proxy";
 
-		/** Only for type FIXED, the maximum number of connections before starting pending acquisition on existing ones. */
+		/**
+		 * Only for type FIXED, the maximum number of connections before starting pending acquisition on existing ones.
+		 */
 		private Integer maxConnections = PoolResources.DEFAULT_POOL_MAX_CONNECTION;
 
-		/** Only for type FIXED, the maximum time in millis to wait for aquiring. */
+		/**
+		 * Only for type FIXED, the maximum time in millis to wait for aquiring.
+		 */
 		private Long acquireTimeout = PoolResources.DEFAULT_POOL_ACQUIRE_TIMEOUT;
 
 		public PoolType getType() {
@@ -157,16 +175,26 @@ public class HttpClientProperties {
 	}
 
 	public class Proxy {
-		/** Hostname for proxy configuration of Netty HttpClient. */
+		/**
+		 * Hostname for proxy configuration of Netty HttpClient.
+		 */
 		private String host;
-		/** Port for proxy configuration of Netty HttpClient. */
+		/**
+		 * Port for proxy configuration of Netty HttpClient.
+		 */
 		private Integer port;
-		/** Username for proxy configuration of Netty HttpClient. */
+		/**
+		 * Username for proxy configuration of Netty HttpClient.
+		 */
 		private String username;
-		/** Password for proxy configuration of Netty HttpClient. */
+		/**
+		 * Password for proxy configuration of Netty HttpClient.
+		 */
 		private String password;
-		/** Regular expression (Java) for a configured list of hosts
-		 * that should be reached directly, bypassing the proxy */
+		/**
+		 * Regular expression (Java) for a configured list of hosts
+		 * that should be reached directly, bypassing the proxy
+		 */
 		private String nonProxyHostsPattern;
 
 		public String getHost() {
@@ -222,11 +250,13 @@ public class HttpClientProperties {
 	}
 
 	public class Ssl {
-		/** Installs the netty InsecureTrustManagerFactory. This is insecure and not suitable for production. */
+		/**
+		 * Installs the netty InsecureTrustManagerFactory. This is insecure and not suitable for production.
+		 */
 		private boolean useInsecureTrustManager = false;
-				
+
 		private List<String> trustedX509Certificates = new ArrayList<>();
-		
+
 		// use netty default SSL timeouts
 		private long handshakeTimeoutMillis = 10000L;
 		private long closeNotifyFlushTimeoutMillis = 3000L;
@@ -235,7 +265,7 @@ public class HttpClientProperties {
 		public List<String> getTrustedX509Certificates() {
 			return trustedX509Certificates;
 		}
-		
+
 		public X509Certificate[] getTrustedX509CertificatesForTrustManager() {
 			try {
 				CertificateFactory certificateFactory = CertificateFactory
@@ -247,15 +277,13 @@ public class HttpClientProperties {
 						Collection<? extends Certificate> certs = certificateFactory
 								.generateCertificates(url.openStream());
 						allCerts.addAll(certs);
-					}
-					catch (IOException e) {
+					} catch (IOException e) {
 						throw new WebServerException(
 								"Could not load certificate '" + trustedCert + "'", e);
 					}
 				}
 				return allCerts.toArray(new X509Certificate[allCerts.size()]);
-			}
-			catch (CertificateException e1) {
+			} catch (CertificateException e1) {
 				throw new WebServerException("Could not load CertificateFactory X.509",
 						e1);
 			}
@@ -282,7 +310,7 @@ public class HttpClientProperties {
 		public void setHandshakeTimeoutMillis(long handshakeTimeoutMillis) {
 			this.handshakeTimeoutMillis = handshakeTimeoutMillis;
 		}
-		
+
 		public long getCloseNotifyFlushTimeoutMillis() {
 			return closeNotifyFlushTimeoutMillis;
 		}
@@ -298,7 +326,7 @@ public class HttpClientProperties {
 		public void setCloseNotifyReadTimeoutMillis(long closeNotifyReadTimeoutMillis) {
 			this.closeNotifyReadTimeoutMillis = closeNotifyReadTimeoutMillis;
 		}
-		
+
 		@Override
 		public String toString() {
 			return "Ssl {useInsecureTrustManager=" + useInsecureTrustManager

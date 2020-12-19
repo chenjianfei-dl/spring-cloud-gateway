@@ -26,7 +26,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 /**
  * 全局跨域配置
- *
+ * <p>
  * Configuration properties for global configuration of cors. See
  * {@link RoutePredicateHandlerMapping}
  */

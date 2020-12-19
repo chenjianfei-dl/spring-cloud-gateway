@@ -125,25 +125,25 @@ public class RetryGatewayFilterFactory extends AbstractGatewayFilterFactory<Retr
 			}
 
 			// chain.filter returns a Mono<Void>
-            Publisher<Void> publisher = chain.filter(exchange)
-                    //.log("retry-filter", Level.INFO)
-                    .doOnSuccessOrError((aVoid, throwable) -> {
-                        int iteration = exchange.getAttributeOrDefault(RETRY_ITERATION_KEY, -1);
-                        exchange.getAttributes().put(RETRY_ITERATION_KEY, iteration + 1);
-                    });
+			Publisher<Void> publisher = chain.filter(exchange)
+					//.log("retry-filter", Level.INFO)
+					.doOnSuccessOrError((aVoid, throwable) -> {
+						int iteration = exchange.getAttributeOrDefault(RETRY_ITERATION_KEY, -1);
+						exchange.getAttributes().put(RETRY_ITERATION_KEY, iteration + 1);
+					});
 
-            if (retry != null) {
+			if (retry != null) {
 				// retryWhen returns a Mono<Void>
 				// retry needs to go before repeat
-				publisher = ((Mono<Void>)publisher).retryWhen(retry.withApplicationContext(exchange));
+				publisher = ((Mono<Void>) publisher).retryWhen(retry.withApplicationContext(exchange));
 			}
 			if (repeat != null) {
-            	// repeatWhen returns a Flux<Void>
+				// repeatWhen returns a Flux<Void>
 				// so this needs to be last and the variable a Publisher<Void>
-				publisher = ((Mono<Void>)publisher).repeatWhen(repeat.withApplicationContext(exchange));
+				publisher = ((Mono<Void>) publisher).repeatWhen(repeat.withApplicationContext(exchange));
 			}
 
-            return Mono.fromDirect(publisher);
+			return Mono.fromDirect(publisher);
 		};
 	}
 
@@ -154,11 +154,11 @@ public class RetryGatewayFilterFactory extends AbstractGatewayFilterFactory<Retr
 	@SuppressWarnings("unchecked")
 	public static class RetryConfig {
 		private int retries = 3;
-		
+
 		private List<Series> series = toList(Series.SERVER_ERROR);
-		
+
 		private List<HttpStatus> statuses = new ArrayList<>();
-		
+
 		private List<HttpMethod> methods = toList(HttpMethod.GET);
 
 		private List<Class<? extends Throwable>> exceptions = toList(IOException.class, TimeoutException.class);
@@ -167,17 +167,17 @@ public class RetryGatewayFilterFactory extends AbstractGatewayFilterFactory<Retr
 			this.retries = retries;
 			return this;
 		}
-		
+
 		public RetryConfig setSeries(Series... series) {
 			this.series = Arrays.asList(series);
 			return this;
 		}
-		
+
 		public RetryConfig setStatuses(HttpStatus... statuses) {
 			this.statuses = Arrays.asList(statuses);
 			return this;
 		}
-		
+
 		public RetryConfig setMethods(HttpMethod... methods) {
 			this.methods = Arrays.asList(methods);
 			return this;

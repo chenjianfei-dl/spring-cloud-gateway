@@ -67,16 +67,16 @@ public class RedirectToGatewayFilterFactory extends AbstractGatewayFilterFactory
 
 	public GatewayFilter apply(HttpStatusHolder httpStatus, URI uri) {
 		return (exchange, chain) ->
-			chain.filter(exchange).then(Mono.defer(() -> {
-				if (!exchange.getResponse().isCommitted()) {
-					setResponseStatus(exchange, httpStatus);
+				chain.filter(exchange).then(Mono.defer(() -> {
+					if (!exchange.getResponse().isCommitted()) {
+						setResponseStatus(exchange, httpStatus);
 
-					final ServerHttpResponse response = exchange.getResponse();
-					response.getHeaders().set(HttpHeaders.LOCATION, uri.toString());
-					return response.setComplete();
-				}
-				return Mono.empty();
-			}));
+						final ServerHttpResponse response = exchange.getResponse();
+						response.getHeaders().set(HttpHeaders.LOCATION, uri.toString());
+						return response.setComplete();
+					}
+					return Mono.empty();
+				}));
 	}
 
 	public static class Config {

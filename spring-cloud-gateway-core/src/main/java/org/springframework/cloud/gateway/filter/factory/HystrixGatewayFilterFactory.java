@@ -134,7 +134,8 @@ public class HystrixGatewayFilterFactory extends AbstractGatewayFilterFactory<Hy
 								return Mono.error(cause);
 							}
 						}
-						default: break;
+						default:
+							break;
 					}
 				}
 				return Mono.error(throwable);

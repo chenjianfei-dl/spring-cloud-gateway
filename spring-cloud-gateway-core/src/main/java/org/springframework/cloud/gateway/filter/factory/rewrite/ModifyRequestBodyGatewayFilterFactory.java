@@ -81,7 +81,7 @@ public class ModifyRequestBodyGatewayFilterFactory
 				headers.set(HttpHeaders.CONTENT_TYPE, config.getContentType());
 			}
 			CachedBodyOutputMessage outputMessage = new CachedBodyOutputMessage(exchange, headers);
-			return bodyInserter.insert(outputMessage,  new BodyInserterContext())
+			return bodyInserter.insert(outputMessage, new BodyInserterContext())
 					// .log("modify_request", Level.INFO)
 					.then(Mono.defer(() -> {
 						ServerHttpRequestDecorator decorator = new ServerHttpRequestDecorator(

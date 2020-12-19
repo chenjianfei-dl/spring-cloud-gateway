@@ -103,10 +103,10 @@ public class ModifyResponseBodyGatewayFilterFactory
 								long contentLength1 = getDelegate().getHeaders().getContentLength();
 								Flux<DataBuffer> messageBody = outputMessage.getBody();
 								//TODO: if (inputStream instanceof Mono) {
-									HttpHeaders headers = getDelegate().getHeaders();
-									if (/*headers.getContentLength() < 0 &&*/ !headers.containsKey(HttpHeaders.TRANSFER_ENCODING)) {
-										messageBody = messageBody.doOnNext(data -> headers.setContentLength(data.readableByteCount()));
-									}
+								HttpHeaders headers = getDelegate().getHeaders();
+								if (/*headers.getContentLength() < 0 &&*/ !headers.containsKey(HttpHeaders.TRANSFER_ENCODING)) {
+									messageBody = messageBody.doOnNext(data -> headers.setContentLength(data.readableByteCount()));
+								}
 								// }
 								//TODO: use isStreamingMediaType?
 								return getDelegate().writeWith(messageBody);
@@ -140,7 +140,7 @@ public class ModifyResponseBodyGatewayFilterFactory
 			if (body instanceof Flux) {
 				flux = (Flux) body;
 			} else {
-				flux = ((Mono)body).flux();
+				flux = ((Mono) body).flux();
 			}
 		}
 
@@ -229,7 +229,7 @@ public class ModifyResponseBodyGatewayFilterFactory
 		}
 
 		public <T, R> Config setRewriteFunction(Class<T> inClass, Class<R> outClass,
-				RewriteFunction<T, R> rewriteFunction) {
+												RewriteFunction<T, R> rewriteFunction) {
 			setInClass(inClass);
 			setOutClass(outClass);
 			setRewriteFunction(rewriteFunction);

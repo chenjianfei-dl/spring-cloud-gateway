@@ -53,20 +53,28 @@ public class RedisRateLimiter extends AbstractRateLimiter<RedisRateLimiter.Confi
 	private Config defaultConfig;
 
 	// configuration properties
-	/** Whether or not to include headers containing rate limiter information, defaults to true. */
+	/**
+	 * Whether or not to include headers containing rate limiter information, defaults to true.
+	 */
 	private boolean includeHeaders = true;
 
-	/** The name of the header that returns number of remaining requests during the current second. */
+	/**
+	 * The name of the header that returns number of remaining requests during the current second.
+	 */
 	private String remainingHeader = REMAINING_HEADER;
 
-	/** The name of the header that returns the replenish rate configuration. */
+	/**
+	 * The name of the header that returns the replenish rate configuration.
+	 */
 	private String replenishRateHeader = REPLENISH_RATE_HEADER;
 
-	/** The name of the header that returns the burst capacity configuration. */
+	/**
+	 * The name of the header that returns the burst capacity configuration.
+	 */
 	private String burstCapacityHeader = BURST_CAPACITY_HEADER;
 
 	public RedisRateLimiter(ReactiveRedisTemplate<String, String> redisTemplate,
-			RedisScript<List<Long>> script, Validator validator) {
+							RedisScript<List<Long>> script, Validator validator) {
 		super(Config.class, CONFIGURATION_PROPERTY_NAME, validator);
 		this.redisTemplate = redisTemplate;
 		this.script = script;
@@ -177,8 +185,7 @@ public class RedisRateLimiter extends AbstractRateLimiter<RedisRateLimiter.Confi
 						}
 						return response;
 					});
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			/*
 			 * We don't want a hard dependency on Redis to allow traffic. Make sure to set
 			 * an alert so you know if this is happening too much. Stripe's observed

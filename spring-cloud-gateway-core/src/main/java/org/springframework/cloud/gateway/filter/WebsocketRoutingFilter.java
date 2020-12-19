@@ -117,7 +117,8 @@ public class WebsocketRoutingFilter implements GlobalFilter, Ordered {
 		}
 	}
 
-	/* for testing */ static String convertHttpToWs(String scheme) {
+	/* for testing */
+	static String convertHttpToWs(String scheme) {
 		scheme = scheme.toLowerCase();
 		return "http".equals(scheme) ? "ws" : "https".equals(scheme) ? "wss" : scheme;
 	}
@@ -154,10 +155,10 @@ public class WebsocketRoutingFilter implements GlobalFilter, Ordered {
 					// Use retain() for Reactor Netty
 					Mono<Void> proxySessionSend = proxySession
 							.send(session.receive().doOnNext(WebSocketMessage::retain));
-                            // .log("proxySessionSend", Level.FINE);
+					// .log("proxySessionSend", Level.FINE);
 					Mono<Void> serverSessionSend = session
 							.send(proxySession.receive().doOnNext(WebSocketMessage::retain));
-                            // .log("sessionSend", Level.FINE);
+					// .log("sessionSend", Level.FINE);
 					return Mono.zip(proxySessionSend, serverSessionSend).then();
 				}
 

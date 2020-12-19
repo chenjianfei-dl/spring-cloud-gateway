@@ -54,7 +54,7 @@ public class BetweenRoutePredicateFactory extends AbstractRoutePredicateFactory<
 		ZonedDateTime datetime2 = getZonedDateTime(config.datetime2);
 		Assert.isTrue(datetime1.isBefore(datetime2),
 				config.datetime1 +
-				" must be before " + config.datetime2);
+						" must be before " + config.datetime2);
 
 		return exchange -> {
 			final ZonedDateTime now = ZonedDateTime.now();

@@ -63,8 +63,7 @@ public class GatewayMetricsFilter implements GlobalFilter, Ordered {
 		ServerHttpResponse response = exchange.getResponse();
 		if (response.isCommitted()) {
 			endTimerInner(exchange, sample);
-		}
-		else {
+		} else {
 			response.beforeCommit(() -> {
 				endTimerInner(exchange, sample);
 				return Mono.empty();
@@ -83,16 +82,14 @@ public class GatewayMetricsFilter implements GlobalFilter, Ordered {
 			httpStatusCodeStr = String.valueOf(statusCode.value());
 			outcome = statusCode.series().name();
 			status = statusCode.name();
-		}
-		else { // a non standard HTTPS status could be used. Let's be defensive here
+		} else { // a non standard HTTPS status could be used. Let's be defensive here
 			if (exchange.getResponse() instanceof AbstractServerHttpResponse) {
 				Integer statusInt = ((AbstractServerHttpResponse) exchange.getResponse())
 						.getStatusCodeValue();
 				if (statusInt != null) {
 					status = String.valueOf(statusInt);
 					httpStatusCodeStr = status;
-				}
-				else {
+				} else {
 					status = "NA";
 				}
 			}

@@ -61,8 +61,14 @@ public class DiscoveryLocatorProperties {
 	 */
 	private boolean lowerCaseServiceId = false;
 
+	/**
+	 * predicates
+	 */
 	private List<PredicateDefinition> predicates = new ArrayList<>();
 
+	/**
+	 * filters
+	 */
 	private List<FilterDefinition> filters = new ArrayList<>();
 
 	public boolean isEnabled() {

@@ -68,7 +68,7 @@ public class PrefixPathGatewayFilterFactory extends AbstractGatewayFilterFactory
 			exchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, request.getURI());
 
 			if (log.isTraceEnabled()) {
-				log.trace("Prefixed URI with: "+config.prefix+" -> "+request.getURI());
+				log.trace("Prefixed URI with: " + config.prefix + " -> " + request.getURI());
 			}
 
 			return chain.filter(exchange.mutate().request(request).build());

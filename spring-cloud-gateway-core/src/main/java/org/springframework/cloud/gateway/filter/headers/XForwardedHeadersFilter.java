@@ -20,6 +20,7 @@ package org.springframework.cloud.gateway.filter.headers;
 import java.net.URI;
 import java.util.LinkedHashSet;
 import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
@@ -32,68 +33,110 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.G
 
 @ConfigurationProperties("spring.cloud.gateway.x-forwarded")
 public class XForwardedHeadersFilter implements HttpHeadersFilter, Ordered {
-	/** default http port */
+	/**
+	 * default http port
+	 */
 	public static final int HTTP_PORT = 80;
 
-	/** default https port */
+	/**
+	 * default https port
+	 */
 	public static final int HTTPS_PORT = 443;
 
-	/** http url scheme */
+	/**
+	 * http url scheme
+	 */
 	public static final String HTTP_SCHEME = "http";
 
-	/** https url scheme */
+	/**
+	 * https url scheme
+	 */
 	public static final String HTTPS_SCHEME = "https";
 
-	/** X-Forwarded-For Header */
+	/**
+	 * X-Forwarded-For Header
+	 */
 	public static final String X_FORWARDED_FOR_HEADER = "X-Forwarded-For";
 
-	/** X-Forwarded-Host Header */
+	/**
+	 * X-Forwarded-Host Header
+	 */
 	public static final String X_FORWARDED_HOST_HEADER = "X-Forwarded-Host";
 
-	/** X-Forwarded-Port Header */
+	/**
+	 * X-Forwarded-Port Header
+	 */
 	public static final String X_FORWARDED_PORT_HEADER = "X-Forwarded-Port";
 
-	/** X-Forwarded-Proto Header */
+	/**
+	 * X-Forwarded-Proto Header
+	 */
 	public static final String X_FORWARDED_PROTO_HEADER = "X-Forwarded-Proto";
 
-	/** X-Forwarded-Prefix Header */
+	/**
+	 * X-Forwarded-Prefix Header
+	 */
 	public static final String X_FORWARDED_PREFIX_HEADER = "X-Forwarded-Prefix";
 
 
-	/** The order of the XForwardedHeadersFilter. */
+	/**
+	 * The order of the XForwardedHeadersFilter.
+	 */
 	private int order = 0;
 
-	/** If the XForwardedHeadersFilter is enabled. */
+	/**
+	 * If the XForwardedHeadersFilter is enabled.
+	 */
 	private boolean enabled = true;
 
-	/** If X-Forwarded-For is enabled. */
+	/**
+	 * If X-Forwarded-For is enabled.
+	 */
 	private boolean forEnabled = true;
 
-	/** If X-Forwarded-Host is enabled. */
+	/**
+	 * If X-Forwarded-Host is enabled.
+	 */
 	private boolean hostEnabled = true;
 
-	/** If X-Forwarded-Port is enabled. */
+	/**
+	 * If X-Forwarded-Port is enabled.
+	 */
 	private boolean portEnabled = true;
 
-	/** If X-Forwarded-Proto is enabled. */
+	/**
+	 * If X-Forwarded-Proto is enabled.
+	 */
 	private boolean protoEnabled = true;
 
-	/** If X-Forwarded-Prefix is enabled. */
+	/**
+	 * If X-Forwarded-Prefix is enabled.
+	 */
 	private boolean prefixEnabled = true;
 
-	/** If appending X-Forwarded-For as a list is enabled. */
+	/**
+	 * If appending X-Forwarded-For as a list is enabled.
+	 */
 	private boolean forAppend = true;
 
-	/** If appending X-Forwarded-Host as a list is enabled. */
+	/**
+	 * If appending X-Forwarded-Host as a list is enabled.
+	 */
 	private boolean hostAppend = true;
 
-	/** If appending X-Forwarded-Port as a list is enabled. */
+	/**
+	 * If appending X-Forwarded-Port as a list is enabled.
+	 */
 	private boolean portAppend = true;
 
-	/** If appending X-Forwarded-Proto as a list is enabled. */
+	/**
+	 * If appending X-Forwarded-Proto as a list is enabled.
+	 */
 	private boolean protoAppend = true;
 
-	/** If appending X-Forwarded-Prefix as a list is enabled. */
+	/**
+	 * If appending X-Forwarded-Prefix as a list is enabled.
+	 */
 	private boolean prefixAppend = true;
 
 	@Override
@@ -205,8 +248,7 @@ public class XForwardedHeadersFilter implements HttpHeadersFilter, Ordered {
 				.forEach(entry -> updated.addAll(entry.getKey(), entry.getValue()));
 
 		if (isForEnabled() &&
-			request.getRemoteAddress() != null && request.getRemoteAddress().getAddress() != null)
-		{
+				request.getRemoteAddress() != null && request.getRemoteAddress().getAddress() != null) {
 			String remoteAddr = request.getRemoteAddress().getAddress().getHostAddress();
 			List<String> xforwarded = original.get(X_FORWARDED_FOR_HEADER);
 			// prevent duplicates
@@ -221,7 +263,7 @@ public class XForwardedHeadersFilter implements HttpHeadersFilter, Ordered {
 			write(updated, X_FORWARDED_PROTO_HEADER, proto, isProtoAppend());
 		}
 
-		if(isPrefixEnabled()) {
+		if (isPrefixEnabled()) {
 			//if the path of the url that the gw is routing to is a subset (and ending part) of the url that it is routing from then the difference is the prefix
 			//e.g. if request original.com/prefix/get/ is routed to routedservice:8090/get then /prefix is the prefix - see XForwardedHeadersFilterTests
 			//so first get uris, then extract paths and remove one from another if it's the ending part
@@ -229,18 +271,18 @@ public class XForwardedHeadersFilter implements HttpHeadersFilter, Ordered {
 			LinkedHashSet<URI> originalUris = exchange.getAttribute(GATEWAY_ORIGINAL_REQUEST_URL_ATTR);
 			URI requestUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
 
-			if(originalUris != null && requestUri != null) {
+			if (originalUris != null && requestUri != null) {
 
 				originalUris.stream().forEach(originalUri -> {
 
-					if(originalUri!=null && originalUri.getPath()!=null) {
+					if (originalUri != null && originalUri.getPath() != null) {
 						String prefix = originalUri.getPath();
 
 						//strip trailing slashes before checking if request path is end of original path
 						String originalUriPath = stripTrailingSlash(originalUri);
 						String requestUriPath = stripTrailingSlash(requestUri);
 
-						if(requestUriPath!=null && (originalUriPath.endsWith(requestUriPath))) {
+						if (requestUriPath != null && (originalUriPath.endsWith(requestUriPath))) {
 							prefix = originalUriPath.replace(requestUriPath, "");
 							if (prefix != null && prefix.length() > 0 &&
 									prefix.length() <= originalUri.getPath().length()) {
@@ -299,8 +341,7 @@ public class XForwardedHeadersFilter implements HttpHeadersFilter, Ordered {
 		if (port < 0 || (port == HTTP_PORT && HTTP_SCHEME.equals(scheme))
 				|| (port == HTTPS_PORT && HTTPS_SCHEME.equals(scheme))) {
 			return host;
-		}
-		else {
+		} else {
 			return host + ":" + port;
 		}
 	}

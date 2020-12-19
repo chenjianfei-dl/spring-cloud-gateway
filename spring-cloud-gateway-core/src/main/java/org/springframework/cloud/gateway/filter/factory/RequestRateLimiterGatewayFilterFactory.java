@@ -42,10 +42,14 @@ public class RequestRateLimiterGatewayFilterFactory extends AbstractGatewayFilte
 	private final RateLimiter defaultRateLimiter;
 	private final KeyResolver defaultKeyResolver;
 
-	/** Switch to deny requests if the Key Resolver returns an empty key, defaults to true. */
+	/**
+	 * Switch to deny requests if the Key Resolver returns an empty key, defaults to true.
+	 */
 	private boolean denyEmptyKey = true;
 
-	/** HttpStatus to return when denyEmptyKey is true, defaults to FORBIDDEN. */
+	/**
+	 * HttpStatus to return when denyEmptyKey is true, defaults to FORBIDDEN.
+	 */
 	private String emptyKeyStatusCode = HttpStatus.FORBIDDEN.name();
 
 	public RequestRateLimiterGatewayFilterFactory(RateLimiter defaultRateLimiter,
@@ -134,6 +138,7 @@ public class RequestRateLimiterGatewayFilterFactory extends AbstractGatewayFilte
 			this.keyResolver = keyResolver;
 			return this;
 		}
+
 		public RateLimiter getRateLimiter() {
 			return rateLimiter;
 		}

@@ -6,8 +6,9 @@ import org.springframework.web.server.ServerWebExchange;
 
 /**
  * Creates a predicate which indicates if the request is intended for a Cloud Foundry Route Service.
- * @see <a href="https://docs.cloudfoundry.org/services/route-services.html">Cloud Foundry Route Service documentation</a>.
+ *
  * @author Andrew Fitzgerald
+ * @see <a href="https://docs.cloudfoundry.org/services/route-services.html">Cloud Foundry Route Service documentation</a>.
  */
 public class CloudFoundryRouteServiceRoutePredicateFactory extends
 		AbstractRoutePredicateFactory<Object> {

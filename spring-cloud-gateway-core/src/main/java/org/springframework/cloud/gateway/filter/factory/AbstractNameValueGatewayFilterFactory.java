@@ -33,8 +33,8 @@ public abstract class AbstractNameValueGatewayFilterFactory extends AbstractGate
 	}
 
 	public List<String> shortcutFieldOrder() {
-        return Arrays.asList(GatewayFilter.NAME_KEY, GatewayFilter.VALUE_KEY);
-    }
+		return Arrays.asList(GatewayFilter.NAME_KEY, GatewayFilter.VALUE_KEY);
+	}
 
 
 	@Validated

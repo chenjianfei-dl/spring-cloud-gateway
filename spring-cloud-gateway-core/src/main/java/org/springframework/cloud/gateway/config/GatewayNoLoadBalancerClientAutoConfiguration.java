@@ -50,8 +50,8 @@ public class GatewayNoLoadBalancerClientAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(LoadBalancerClientFilter.class)
 	public NoLoadBalancerClientFilter noLoadBalancerClientFilter() {
-			return new NoLoadBalancerClientFilter();
-		}
+		return new NoLoadBalancerClientFilter();
+	}
 
 	protected static class NoLoadBalancerClientFilter implements GlobalFilter, Ordered {
 

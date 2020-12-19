@@ -28,8 +28,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import reactor.core.publisher.Flux;
 
 /**
- *
  * Used to build a {@link RouteLocator}
+ *
  * @author Jianfei.Chen
  */
 public class RouteLocatorBuilder {
@@ -42,6 +42,7 @@ public class RouteLocatorBuilder {
 
 	/**
 	 * Creates a new {@link Builder}
+	 *
 	 * @return a new {@link Builder}
 	 */
 	public Builder routes() {
@@ -62,6 +63,7 @@ public class RouteLocatorBuilder {
 
 		/**
 		 * Creates a new {@link Route}
+		 *
 		 * @param id the unique id for the route
 		 * @param fn a function which takes in a {@link PredicateSpec} and returns a {@link Route.AsyncBuilder}
 		 * @return a {@link Builder}
@@ -74,6 +76,7 @@ public class RouteLocatorBuilder {
 
 		/**
 		 * Creates a new {@link Route}
+		 *
 		 * @param fn a function which takes in a {@link PredicateSpec} and returns a {@link Route.AsyncBuilder}
 		 * @return a {@link Builder}
 		 */
@@ -85,6 +88,7 @@ public class RouteLocatorBuilder {
 
 		/**
 		 * Builds and returns a {@link RouteLocator}
+		 *
 		 * @return a {@link RouteLocator}
 		 */
 		public RouteLocator build() {

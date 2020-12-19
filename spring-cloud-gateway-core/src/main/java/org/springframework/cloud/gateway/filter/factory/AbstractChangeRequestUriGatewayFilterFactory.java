@@ -48,7 +48,7 @@ public abstract class AbstractChangeRequestUriGatewayFilterFactory<T>
 	}
 
 	protected abstract Optional<URI> determineRequestUri(ServerWebExchange exchange,
-			T config);
+														 T config);
 
 	public GatewayFilter apply(T config) {
 		return new OrderedGatewayFilter((exchange, chain) -> {
