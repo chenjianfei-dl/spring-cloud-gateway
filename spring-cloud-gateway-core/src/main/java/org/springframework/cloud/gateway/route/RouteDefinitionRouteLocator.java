@@ -64,6 +64,9 @@ public class RouteDefinitionRouteLocator implements RouteLocator, BeanFactoryAwa
 	private ApplicationEventPublisher publisher;
 
 	/**
+	 * <p>
+	 *     RouteDefinitionRouteLocator
+	 * </p>
 	 * @param routeDefinitionLocator RouteDefinition Locator，一个 RouteDefinitionLocator 对象
 	 * @param predicates             predicates factories，Predicate 工厂列表，会被映射成 key 为 name, value 为 factory
 	 *                               的 Map。可以猜想出 gateway 是如何根据 PredicateDefinition 中定义的 name 来匹配到相对应的 factory 了

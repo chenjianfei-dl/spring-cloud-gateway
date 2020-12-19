@@ -77,6 +77,12 @@ public class RouteDefinition {
 	public RouteDefinition() {
 	}
 
+	/**
+	 * 根据 text 创建 RouteDefinition
+	 *
+	 * @param text 格式 ${id}=${uri},${predicates[0]},${predicates[1]}...${predicates[n]}
+	 *  *          例如 route001=http://127.0.0.1,Host=**.addrequestparameter.org,Path=/get
+	 */
 	public RouteDefinition(String text) {
 		int eqIdx = text.indexOf('=');
 		if (eqIdx <= 0) {
