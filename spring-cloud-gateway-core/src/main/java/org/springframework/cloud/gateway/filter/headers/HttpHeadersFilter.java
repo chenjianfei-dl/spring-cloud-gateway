@@ -30,21 +30,21 @@ public interface HttpHeadersFilter {
 
 	/**
 	 * Filters a set of Http Headers
-	 * 
-	 * @param input Http Headers
+	 *
+	 * @param input    Http Headers
 	 * @param exchange
 	 * @return filtered Http Headers
 	 */
 	HttpHeaders filter(HttpHeaders input, ServerWebExchange exchange);
 
 	static HttpHeaders filterRequest(List<HttpHeadersFilter> filters,
-							  ServerWebExchange exchange) {
+									 ServerWebExchange exchange) {
 		HttpHeaders headers = exchange.getRequest().getHeaders();
 		return filter(filters, headers, exchange, Type.REQUEST);
 	}
 
 	static HttpHeaders filter(List<HttpHeadersFilter> filters, HttpHeaders input,
-			ServerWebExchange exchange, Type type) {
+							  ServerWebExchange exchange, Type type) {
 		HttpHeaders response = input;
 		if (filters != null) {
 			HttpHeaders reduce = filters.stream()

@@ -103,7 +103,7 @@ public class RoutePredicateHandlerMapping extends AbstractHandlerMapping {
 		// TODO: support cors configuration via properties on a route see gh-229
 		// see RequestMappingHandlerMapping.initCorsConfiguration()
 		// also see https://github.com/spring-projects/spring-framework/blob/master/spring-web/src/test/java/org/springframework/web/cors/reactive/CorsWebFilterTests.java	        
-	    
+
 		return super.getCorsConfiguration(handler, exchange);
 	}
 
@@ -129,7 +129,7 @@ public class RoutePredicateHandlerMapping extends AbstractHandlerMapping {
 							return r.getPredicate().apply(exchange);
 						})
 						//instead of immediately stopping main flux due to error, log and swallow it
-						.doOnError(e -> logger.error("Error applying predicate for route: "+route.getId(), e))
+						.doOnError(e -> logger.error("Error applying predicate for route: " + route.getId(), e))
 						.onErrorResume(e -> Mono.empty())
 				)
 				// .defaultIfEmpty() put a static Route not found
@@ -155,7 +155,8 @@ public class RoutePredicateHandlerMapping extends AbstractHandlerMapping {
 	 * Validate the given handler against the current request.
 	 * <p>The default implementation is empty. Can be overridden in subclasses,
 	 * for example to enforce specific preconditions expressed in URL mappings.
-	 * @param route the Route object to validate
+	 *
+	 * @param route    the Route object to validate
 	 * @param exchange current exchange
 	 * @throws Exception if validation failed
 	 */

@@ -66,50 +66,50 @@ Modified response header Access-Control-Allow-Credentials: true
  * @author Vitaliy Pavlyuk
  */
 public class DedupeResponseHeaderGatewayFilterFactory
-        extends AbstractGatewayFilterFactory<DedupeResponseHeaderGatewayFilterFactory.Config> {
+		extends AbstractGatewayFilterFactory<DedupeResponseHeaderGatewayFilterFactory.Config> {
 
-    private static final String STRATEGY_KEY = "strategy";
+	private static final String STRATEGY_KEY = "strategy";
 
-    public DedupeResponseHeaderGatewayFilterFactory() {
-        super(Config.class);
-    }
+	public DedupeResponseHeaderGatewayFilterFactory() {
+		super(Config.class);
+	}
 
-    @Override
-    public List<String> shortcutFieldOrder() {
-        return Arrays.asList(NAME_KEY, STRATEGY_KEY);
-    }
+	@Override
+	public List<String> shortcutFieldOrder() {
+		return Arrays.asList(NAME_KEY, STRATEGY_KEY);
+	}
 
-    @Override
-    public GatewayFilter apply(Config config) {
-        return (exchange, chain) -> chain.filter(exchange).then(Mono.fromRunnable(() -> {
-            dedupe(exchange.getResponse().getHeaders(), config);
-        }));
-    }
+	@Override
+	public GatewayFilter apply(Config config) {
+		return (exchange, chain) -> chain.filter(exchange).then(Mono.fromRunnable(() -> {
+			dedupe(exchange.getResponse().getHeaders(), config);
+		}));
+	}
 
-    public enum Strategy {
-        /*
-        Default: Retain the first value only.
-         */
-        RETAIN_FIRST,
+	public enum Strategy {
+		/*
+		Default: Retain the first value only.
+		 */
+		RETAIN_FIRST,
 
-        /*
-        Retain the last value only.
-         */
-        RETAIN_LAST,
+		/*
+		Retain the last value only.
+		 */
+		RETAIN_LAST,
 
-        /*
-        Retain all unique values in the order of their first encounter.
-         */
-        RETAIN_UNIQUE
-    }
+		/*
+		Retain all unique values in the order of their first encounter.
+		 */
+		RETAIN_UNIQUE
+	}
 
-    void dedupe(HttpHeaders headers, Config config) {
-        String names = config.getName();
-        Strategy strategy = config.getStrategy();
-        if (headers == null || names == null || strategy == null) {
-            return;
-        }
-        for (String name : names.split(" ")) {
+	void dedupe(HttpHeaders headers, Config config) {
+		String names = config.getName();
+		Strategy strategy = config.getStrategy();
+		if (headers == null || names == null || strategy == null) {
+			return;
+		}
+		for (String name : names.split(" ")) {
 			dedupe(headers, name.trim(), strategy);
 		}
 	}
@@ -135,15 +135,15 @@ public class DedupeResponseHeaderGatewayFilterFactory
 	}
 
 	public static class Config extends AbstractGatewayFilterFactory.NameConfig {
-        private Strategy strategy = Strategy.RETAIN_FIRST;
+		private Strategy strategy = Strategy.RETAIN_FIRST;
 
-        public Strategy getStrategy() {
-            return strategy;
-        }
+		public Strategy getStrategy() {
+			return strategy;
+		}
 
-        public Config setStrategy(Strategy strategy) {
-            this.strategy = strategy;
-            return this;
-        }
-    }
+		public Config setStrategy(Strategy strategy) {
+			this.strategy = strategy;
+			return this;
+		}
+	}
 }

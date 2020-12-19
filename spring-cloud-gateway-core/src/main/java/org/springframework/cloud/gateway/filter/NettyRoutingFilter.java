@@ -152,7 +152,7 @@ public class NettyRoutingFilter implements GlobalFilter, Ordered {
 				// https://jira.spring.io/browse/SPR-16748
 				((AbstractServerHttpResponse) response).setStatusCodeValue(res.status().code());
 			} else {
-				throw new IllegalStateException("Unable to set status code on response: " +res.status().code()+", "+response.getClass());
+				throw new IllegalStateException("Unable to set status code on response: " + res.status().code() + ", " + response.getClass());
 			}
 
 			// make sure headers filters run after setting status so it is available in response

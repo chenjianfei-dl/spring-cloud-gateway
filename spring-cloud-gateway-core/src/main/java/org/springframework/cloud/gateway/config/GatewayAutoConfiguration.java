@@ -138,9 +138,8 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
 import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool.PoolType.FIXED;
 
 /**
- *
  * Spring Cloud Gateway 核心配置类
- *
+ * <p>
  * 网关初始化
  *
  * @author Spencer Gibb
@@ -149,8 +148,8 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
 @ConditionalOnProperty(name = "spring.cloud.gateway.enabled", matchIfMissing = true)
 @EnableConfigurationProperties
 @AutoConfigureBefore(HttpHandlerAutoConfiguration.class)
-@AutoConfigureAfter({ GatewayLoadBalancerClientAutoConfiguration.class,
-		GatewayClassPathWarningAutoConfiguration.class })
+@AutoConfigureAfter({GatewayLoadBalancerClientAutoConfiguration.class,
+		GatewayClassPathWarningAutoConfiguration.class})
 @ConditionalOnClass(DispatcherHandler.class)
 public class GatewayAutoConfiguration {
 
@@ -186,8 +185,7 @@ public class GatewayAutoConfiguration {
 					opts.sslSupport(sslContextBuilder -> {
 						sslContextBuilder.trustManager(trustedX509Certificates);
 					});
-				}
-				else if (ssl.isUseInsecureTrustManager()) {
+				} else if (ssl.isUseInsecureTrustManager()) {
 					opts.sslSupport(sslContextBuilder -> {
 						sslContextBuilder
 								.trustManager(InsecureTrustManagerFactory.INSTANCE);
@@ -213,25 +211,13 @@ public class GatewayAutoConfiguration {
 				HttpClientProperties.Proxy proxy = properties.getProxy();
 				if (StringUtils.hasText(proxy.getHost())) {
 					opts.proxy(typeSpec -> {
-						ClientProxyOptions.Builder builder = typeSpec
-								.type(ClientProxyOptions.Proxy.HTTP)
-								.host(proxy.getHost());
+						ClientProxyOptions.Builder builder = typeSpec.type(ClientProxyOptions.Proxy.HTTP).host(proxy.getHost());
 
 						PropertyMapper map = PropertyMapper.get();
-
-						map.from(proxy::getPort)
-								.whenNonNull()
-								.to(builder::port);
-						map.from(proxy::getUsername)
-								.whenHasText()
-								.to(builder::username);
-						map.from(proxy::getPassword)
-								.whenHasText()
-								.to(password -> builder.password(s -> password));
-						map.from(proxy::getNonProxyHostsPattern)
-								.whenHasText()
-								.to(builder::nonProxyHosts);
-
+						map.from(proxy::getPort).whenNonNull().to(builder::port);
+						map.from(proxy::getUsername).whenHasText().to(builder::username);
+						map.from(proxy::getPassword).whenHasText().to(password -> builder.password(s -> password));
+						map.from(proxy::getNonProxyHostsPattern).whenHasText().to(builder::nonProxyHosts);
 						return builder;
 					});
 				}
@@ -243,7 +229,7 @@ public class GatewayAutoConfiguration {
 			return new HttpClientProperties();
 		}
 
-		@Bean	// 1.3 使用 HttpClient Bean ，创建一个类型为NettyRoutingFilter 的 Bean 对象
+		@Bean    // 1.3 使用 HttpClient Bean ，创建一个类型为NettyRoutingFilter 的 Bean 对象
 		public NettyRoutingFilter routingFilter(HttpClient httpClient,
 												ObjectProvider<List<HttpHeadersFilter>> headersFilters,
 												HttpClientProperties properties) {
@@ -300,9 +286,9 @@ public class GatewayAutoConfiguration {
 
 	@Bean // 4.4
 	public RouteLocator routeDefinitionRouteLocator(GatewayProperties properties,
-												   List<GatewayFilterFactory> GatewayFilters,
-												   List<RoutePredicateFactory> predicates,
-												   RouteDefinitionLocator routeDefinitionLocator) {
+													List<GatewayFilterFactory> GatewayFilters,
+													List<RoutePredicateFactory> predicates,
+													RouteDefinitionLocator routeDefinitionLocator) {
 		return new RouteDefinitionRouteLocator(routeDefinitionLocator, predicates, GatewayFilters, properties);
 	}
 
@@ -339,6 +325,7 @@ public class GatewayAutoConfiguration {
 	/**
 	 * 创建一个类型为 RoutePredicateHandlerMapping 的 Bean 对象，
 	 * 用于查找匹配到 Route ，并进行处理
+	 *
 	 * @param webHandler
 	 * @param routeLocator
 	 * @param globalCorsProperties
@@ -368,10 +355,8 @@ public class GatewayAutoConfiguration {
 	// HttpHeaderFilter beans
 
 	/**
-	 *
 	 * 通过 spring.cloud.gateway.enabled 配置网关的开启与关闭
 	 * matchIfMissing = true => 网关默认开启。
-	 *
 	 *
 	 * @return
 	 */
@@ -393,7 +378,7 @@ public class GatewayAutoConfiguration {
 	}
 
 	// GlobalFilter beans ----org.springframework.cloud.gateway.filter
-	
+
 	@Bean
 	public AdaptCachedBodyGlobalFilter adaptCachedBodyGlobalFilter() {
 		return new AdaptCachedBodyGlobalFilter();
@@ -443,8 +428,6 @@ public class GatewayAutoConfiguration {
 	public WebClientWriteResponseFilter webClientWriteResponseFilter() {
 		return new WebClientWriteResponseFilter();
 	}*/
-
-
 
 
 	// Predicate Factory beans ----org.springframework.cloud.gateway.handler.predicate
@@ -656,8 +639,8 @@ public class GatewayAutoConfiguration {
 		@Bean
 		@ConditionalOnEnabledEndpoint
 		public GatewayControllerEndpoint gatewayControllerEndpoint(RouteDefinitionLocator routeDefinitionLocator, List<GlobalFilter> globalFilters,
-																List<GatewayFilterFactory> GatewayFilters, RouteDefinitionWriter routeDefinitionWriter,
-																RouteLocator routeLocator) {
+																   List<GatewayFilterFactory> GatewayFilters, RouteDefinitionWriter routeDefinitionWriter,
+																   RouteLocator routeLocator) {
 			return new GatewayControllerEndpoint(routeDefinitionLocator, globalFilters, GatewayFilters, routeDefinitionWriter, routeLocator);
 		}
 	}

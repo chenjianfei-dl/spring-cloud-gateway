@@ -62,15 +62,15 @@ public class RemoteAddrRoutePredicateFactory extends AbstractRoutePredicateFacto
 	@NotNull
 	private List<IpSubnetFilterRule> convert(List<String> values) {
 		List<IpSubnetFilterRule> sources = new ArrayList<>();
-        for (String arg : values) {
-            addSource(sources, arg);
-        }
+		for (String arg : values) {
+			addSource(sources, arg);
+		}
 		return sources;
 	}
 
 	@Override
 	public Predicate<ServerWebExchange> apply(Config config) {
-        List<IpSubnetFilterRule> sources = convert(config.sources);
+		List<IpSubnetFilterRule> sources = convert(config.sources);
 
 		return exchange -> {
 			InetSocketAddress remoteAddress = config.remoteAddressResolver.resolve(exchange);
@@ -98,7 +98,7 @@ public class RemoteAddrRoutePredicateFactory extends AbstractRoutePredicateFacto
 			source = source + "/32";
 		}
 
-		String[] ipAddressCidrPrefix = source.split("/",2);
+		String[] ipAddressCidrPrefix = source.split("/", 2);
 		String ipAddress = ipAddressCidrPrefix[0];
 		int cidrPrefix = Integer.parseInt(ipAddressCidrPrefix[1]);
 
@@ -111,7 +111,8 @@ public class RemoteAddrRoutePredicateFactory extends AbstractRoutePredicateFacto
 		private List<String> sources = new ArrayList<>();
 
 		@NotNull
-		private RemoteAddressResolver remoteAddressResolver = new RemoteAddressResolver(){};
+		private RemoteAddressResolver remoteAddressResolver = new RemoteAddressResolver() {
+		};
 
 		public List<String> getSources() {
 			return sources;

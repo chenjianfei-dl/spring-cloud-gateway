@@ -20,10 +20,10 @@ import org.springframework.web.server.WebSession;
 
 /**
  * Save the current {@link WebSession} before executing the rest of the {@link org.springframework.cloud.gateway.filter.GatewayFilterChain}.
- *
+ * <p>
  * Filter is very useful for situation where the WebSession is lazy (e.g. Spring Session MongoDB) and making a remote call requires
  * that {@link WebSession#save()} be called before the remote call is made.
- * 
+ *
  * @author Greg Turnquist
  */
 public class SaveSessionGatewayFilterFactory extends AbstractGatewayFilterFactory {
@@ -31,7 +31,7 @@ public class SaveSessionGatewayFilterFactory extends AbstractGatewayFilterFactor
 	@Override
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> exchange.getSession()
-			.map(WebSession::save)
-			.then(chain.filter(exchange));
+				.map(WebSession::save)
+				.then(chain.filter(exchange));
 	}
 }

@@ -36,8 +36,8 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 /**
  * 对 Route 信息进行定义，最终会被 RouteLocator 解析成 Route
- *
- *
+ * <p>
+ * <p>
  * RouteDefinition 中所定义的属性与 Route 本身是一一对应的
  *
  * @author Spencer Gibb
@@ -50,6 +50,7 @@ public class RouteDefinition {
 	 */
 	@NotEmpty
 	private String id = UUID.randomUUID().toString();
+
 	/**
 	 * 定义 Predicate
 	 */
@@ -81,7 +82,7 @@ public class RouteDefinition {
 	 * 根据 text 创建 RouteDefinition
 	 *
 	 * @param text 格式 ${id}=${uri},${predicates[0]},${predicates[1]}...${predicates[n]}
-	 *  *          例如 route001=http://127.0.0.1,Host=**.addrequestparameter.org,Path=/get
+	 *             *          例如 route001=http://127.0.0.1,Host=**.addrequestparameter.org,Path=/get
 	 */
 	public RouteDefinition(String text) {
 		int eqIdx = text.indexOf('=');

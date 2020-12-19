@@ -63,7 +63,7 @@ public class WeightRoutePredicateFactory extends AbstractRoutePredicateFactory<W
 
 	@Override
 	public String shortcutFieldPrefix() {
-			return WeightConfig.CONFIG_PREFIX;
+		return WeightConfig.CONFIG_PREFIX;
 	}
 
 	@Override
@@ -88,12 +88,12 @@ public class WeightRoutePredicateFactory extends AbstractRoutePredicateFactory<W
 
 				String chosenRoute = weights.get(group);
 				if (log.isTraceEnabled()) {
-					log.trace("in group weight: "+ group + ", current route: " + routeId +", chosen route: " + chosenRoute);
+					log.trace("in group weight: " + group + ", current route: " + routeId + ", chosen route: " + chosenRoute);
 				}
 
 				return routeId.equals(chosenRoute);
 			} else if (log.isTraceEnabled()) {
-				log.trace("no weights found for group: "+ group + ", current route: " + routeId);
+				log.trace("no weights found for group: " + group + ", current route: " + routeId);
 			}
 
 			return false;

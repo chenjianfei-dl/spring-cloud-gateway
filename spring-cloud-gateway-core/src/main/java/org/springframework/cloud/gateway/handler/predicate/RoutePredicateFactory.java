@@ -28,6 +28,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.toAsyncPredicate;
 
+
 /**
  * RoutePredicateFactory 是所有 predicate factory 的顶级接口，职责就是生产 Predicate
  *

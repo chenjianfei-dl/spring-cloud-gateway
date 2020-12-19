@@ -29,7 +29,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.DispatcherHandler;
 
 /**
- *
  * 初始化 LoadBalancerClientFilter
  *
  * @author Spencer Gibb

@@ -76,7 +76,7 @@ public class ServerWebExchangeUtils {
 	public static boolean setResponseStatus(ServerWebExchange exchange, HttpStatus httpStatus) {
 		boolean response = exchange.getResponse().setStatusCode(httpStatus);
 		if (!response && logger.isWarnEnabled()) {
-			logger.warn("Unable to set status code to "+ httpStatus + ". Response already committed.");
+			logger.warn("Unable to set status code to " + httpStatus + ". Response already committed.");
 		}
 		return response;
 	}
@@ -90,7 +90,7 @@ public class ServerWebExchangeUtils {
 		}
 		if (statusHolder.getStatus() != null
 				&& exchange.getResponse() instanceof AbstractServerHttpResponse) { //non-standard
-			((AbstractServerHttpResponse)exchange.getResponse()).setStatusCodeValue(statusHolder.getStatus());
+			((AbstractServerHttpResponse) exchange.getResponse()).setStatusCodeValue(statusHolder.getStatus());
 			return true;
 		}
 		return false;

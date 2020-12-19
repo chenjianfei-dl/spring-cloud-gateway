@@ -39,6 +39,7 @@ public interface GatewayFilterFactory<C> extends ShortcutConfigurable, Configura
 
 	/**
 	 * 核心方法，用于生产 GatewayFilter，接收一个范型参数 config
+	 *
 	 * @param consumer
 	 * @return
 	 */

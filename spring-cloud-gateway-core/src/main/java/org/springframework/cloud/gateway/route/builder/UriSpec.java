@@ -34,6 +34,7 @@ public class UriSpec {
 
 	/**
 	 * Set the URI for the route.
+	 *
 	 * @param uri the URI for the route
 	 * @return a {@link Route.AsyncBuilder}
 	 */
@@ -43,6 +44,7 @@ public class UriSpec {
 
 	/**
 	 * Set the URI for the route.
+	 *
 	 * @param uri the URI for the route.
 	 * @return a {@link Route.AsyncBuilder}
 	 */

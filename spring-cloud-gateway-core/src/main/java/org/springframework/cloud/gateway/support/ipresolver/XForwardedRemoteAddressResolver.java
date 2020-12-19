@@ -18,17 +18,18 @@ import org.springframework.web.server.ServerWebExchange;
  * {@link ServerHttpRequest#getRemoteAddress()}. Use the static constructor methods which
  * meets your security requirements.
  *
+ * @author Andrew Fitzgerald
  * @see <a href=
  * "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For">X-Forwarded-For
  * reference</a>
- * @author Andrew Fitzgerald
  */
 public class XForwardedRemoteAddressResolver implements RemoteAddressResolver {
 
 	public static final String X_FORWARDED_FOR = "X-Forwarded-For";
 	private static final Logger log = LoggerFactory
 			.getLogger(XForwardedRemoteAddressResolver.class);
-	private final RemoteAddressResolver defaultRemoteIpResolver = new RemoteAddressResolver() {};
+	private final RemoteAddressResolver defaultRemoteIpResolver = new RemoteAddressResolver() {
+	};
 
 	private final int maxTrustedIndex;
 
@@ -50,6 +51,8 @@ public class XForwardedRemoteAddressResolver implements RemoteAddressResolver {
 	}
 
 	/**
+	 * @param maxTrustedIndex correlates to the number of trusted proxies expected in
+	 *                        front of Spring Cloud Gateway (index starts at 1).
 	 * @return a {@link XForwardedRemoteAddressResolver} which extracts the last
 	 * <em>trusted</em> IP address found in the X-Forwarded-For header (when present).
 	 * This configuration exists to prevent a malicious actor from spoofing the value of
@@ -57,10 +60,10 @@ public class XForwardedRemoteAddressResolver implements RemoteAddressResolver {
 	 * accessible from a a trusted load balancer, then you can trust that the load
 	 * balancer will append a valid client IP address to the X-Forwarded-For header, and
 	 * should use a value of `1` for the `maxTrustedIndex`.
-	 *
-	 *
+	 * <p>
+	 * <p>
 	 * Given the X-Forwarded-For value of [0.0.0.1, 0.0.0.2, 0.0.0.3]:
-	 * 
+	 *
 	 * <pre>
 	 * maxTrustedIndex -> result
 	 *
@@ -70,9 +73,6 @@ public class XForwardedRemoteAddressResolver implements RemoteAddressResolver {
 	 * 3 -> 0.0.0.1
 	 * [4, MAX_VALUE] -> 0.0.0.1
 	 * </pre>
-	 *
-	 * @param maxTrustedIndex correlates to the number of trusted proxies expected in
-	 * front of Spring Cloud Gateway (index starts at 1).
 	 */
 	public static XForwardedRemoteAddressResolver maxTrustedIndex(
 			int maxTrustedIndex) {
@@ -85,6 +85,7 @@ public class XForwardedRemoteAddressResolver implements RemoteAddressResolver {
 	 * method parses those IP addresses into a list. If no X-Forwarded-For header is
 	 * found, an empty list is returned. If multiple X-Forwarded-For headers are found, an
 	 * empty list is returned out of caution.
+	 *
 	 * @return The parsed values of the X-Forwarded-Header.
 	 */
 	@Override

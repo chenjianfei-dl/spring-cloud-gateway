@@ -33,14 +33,13 @@ import org.springframework.web.reactive.DispatcherHandler;
 
 /**
  * Gateway metric auto configuration
- *
  */
 @Configuration
 @ConditionalOnProperty(name = "spring.cloud.gateway.enabled", matchIfMissing = true)
 @AutoConfigureBefore(HttpHandlerAutoConfiguration.class)
-@AutoConfigureAfter({ MetricsAutoConfiguration.class,
-		CompositeMeterRegistryAutoConfiguration.class })
-@ConditionalOnClass({ DispatcherHandler.class, MeterRegistry.class, MetricsAutoConfiguration.class})
+@AutoConfigureAfter({MetricsAutoConfiguration.class,
+		CompositeMeterRegistryAutoConfiguration.class})
+@ConditionalOnClass({DispatcherHandler.class, MeterRegistry.class, MetricsAutoConfiguration.class})
 public class GatewayMetricsAutoConfiguration {
 
 	@Bean

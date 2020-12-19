@@ -47,7 +47,7 @@ public class DefaultServerResponse<T> implements ServerResponse {
 	private final Map<String, Object> hints;
 
 	public DefaultServerResponse(ServerWebExchange exchange,
-			BodyInserter<T, ? super ServerHttpResponse> body, Map<String, Object> hints) {
+								 BodyInserter<T, ? super ServerHttpResponse> body, Map<String, Object> hints) {
 		this.exchange = exchange;
 		Assert.notNull(exchange, "ServerWebExchange must not be null");
 		Assert.notNull(body, "BodyInserter must not be null");
@@ -82,10 +82,12 @@ public class DefaultServerResponse<T> implements ServerResponse {
 			public List<HttpMessageWriter<?>> messageWriters() {
 				return context.messageWriters();
 			}
+
 			@Override
 			public Optional<ServerHttpRequest> serverRequest() {
 				return Optional.of(exchange.getRequest());
 			}
+
 			@Override
 			public Map<String, Object> hints() {
 				return hints;

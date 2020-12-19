@@ -40,8 +40,8 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.G
 
 /**
  * 过滤器链处理器
- *
- *
+ * <p>
+ * <p>
  * WebHandler that delegates to a chain of {@link GlobalFilter} instances and
  * {@link GatewayFilterFactory} instances then to the target {@link WebHandler}.
  *
@@ -140,8 +140,9 @@ public class FilteringWebHandler implements WebHandler {
 
 		/**
 		 * 使用 delegate 过滤请求
+		 *
 		 * @param exchange the current server exchange
-		 * @param chain provides a way to delegate to the next filter
+		 * @param chain    provides a way to delegate to the next filter
 		 * @return
 		 */
 		@Override

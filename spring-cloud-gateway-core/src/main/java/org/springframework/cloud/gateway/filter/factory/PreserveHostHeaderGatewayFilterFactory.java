@@ -27,10 +27,11 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.P
 public class PreserveHostHeaderGatewayFilterFactory extends AbstractGatewayFilterFactory {
 
 	public GatewayFilter apply() {
-		return apply(o -> {});
+		return apply(o -> {
+		});
 	}
 
-    public GatewayFilter apply(Object config) {
+	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
 			exchange.getAttributes().put(PRESERVE_HOST_HEADER_ATTRIBUTE, true);
 			return chain.filter(exchange);

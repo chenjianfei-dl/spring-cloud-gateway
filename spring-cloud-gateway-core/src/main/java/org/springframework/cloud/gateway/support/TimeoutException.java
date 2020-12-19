@@ -33,6 +33,7 @@ public class TimeoutException extends Exception {
 
 	/**
 	 * Disables fillInStackTrace for performance reasons.
+	 *
 	 * @return
 	 */
 	@Override

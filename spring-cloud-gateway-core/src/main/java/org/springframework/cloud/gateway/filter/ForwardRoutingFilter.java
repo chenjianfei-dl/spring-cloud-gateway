@@ -53,7 +53,7 @@ public class ForwardRoutingFilter implements GlobalFilter, Ordered {
 		//TODO: translate url?
 
 		if (log.isTraceEnabled()) {
-			log.trace("Forwarding to URI: "+requestUrl);
+			log.trace("Forwarding to URI: " + requestUrl);
 		}
 
 		return this.getDispatcherHandler().handle(exchange);

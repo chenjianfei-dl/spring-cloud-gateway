@@ -50,12 +50,10 @@ public class RouteRefreshListener
 				|| event instanceof RefreshScopeRefreshedEvent
 				|| event instanceof InstanceRegisteredEvent) {
 			reset();
-		}
-		else if (event instanceof ParentHeartbeatEvent) {
+		} else if (event instanceof ParentHeartbeatEvent) {
 			ParentHeartbeatEvent e = (ParentHeartbeatEvent) event;
 			resetIfNeeded(e.getValue());
-		}
-		else if (event instanceof HeartbeatEvent) {
+		} else if (event instanceof HeartbeatEvent) {
 			HeartbeatEvent e = (HeartbeatEvent) event;
 			resetIfNeeded(e.getValue());
 		}

@@ -107,7 +107,7 @@ public class WeightCalculatorWebFilter implements WebFilter, Ordered, SmartAppli
 		if (event instanceof PredicateArgsEvent) {
 			handle((PredicateArgsEvent) event);
 		} else if (event instanceof WeightDefinedEvent) {
-			addWeightConfig(((WeightDefinedEvent)event).getWeightConfig());
+			addWeightConfig(((WeightDefinedEvent) event).getWeightConfig());
 		} else if (event instanceof RefreshRoutesEvent && routeLocator != null) {
 			routeLocator.ifAvailable(locator -> locator.getRoutes().subscribe()); // forces initialization
 		}
@@ -172,7 +172,7 @@ public class WeightCalculatorWebFilter implements WebFilter, Ordered, SmartAppli
 		}
 
 		if (log.isTraceEnabled()) {
-			log.trace("Recalculated group weight config "+ config);
+			log.trace("Recalculated group weight config " + config);
 		}
 	}
 
@@ -199,11 +199,11 @@ public class WeightCalculatorWebFilter implements WebFilter, Ordered, SmartAppli
 			List<Double> ranges = config.ranges;
 
 			if (log.isTraceEnabled()) {
-				log.trace("Weight for group: "+group +", ranges: "+ranges +", r: "+r);
+				log.trace("Weight for group: " + group + ", ranges: " + ranges + ", r: " + r);
 			}
 
 			for (int i = 0; i < ranges.size() - 1; i++) {
-				if (r >= ranges.get(i) && r < ranges.get(i+1)) {
+				if (r >= ranges.get(i) && r < ranges.get(i + 1)) {
 					String routeId = config.rangeIndexes.get(i);
 					weights.put(group, routeId);
 					break;
@@ -212,13 +212,14 @@ public class WeightCalculatorWebFilter implements WebFilter, Ordered, SmartAppli
 		}
 
 		if (log.isTraceEnabled()) {
-			log.trace("Weights attr: "+weights);
+			log.trace("Weights attr: " + weights);
 		}
 
 		return chain.filter(exchange);
 	}
 
-	/* for testing */ static Map<String, String> getWeights(ServerWebExchange exchange) {
+	/* for testing */
+	static Map<String, String> getWeights(ServerWebExchange exchange) {
 		Map<String, String> weights = exchange.getAttribute(WEIGHT_ATTR);
 
 		if (weights == null) {

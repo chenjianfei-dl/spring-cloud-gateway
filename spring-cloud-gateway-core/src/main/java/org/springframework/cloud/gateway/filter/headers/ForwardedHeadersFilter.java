@@ -84,19 +84,21 @@ public class ForwardedHeadersFilter implements HttpHeadersFilter, Ordered {
 	}
 
 
-	/* for testing */ static List<Forwarded> parse(List<String> values) {
+	/* for testing */
+	static List<Forwarded> parse(List<String> values) {
 		ArrayList<Forwarded> forwardeds = new ArrayList<>();
 		if (CollectionUtils.isEmpty(values)) {
 			return forwardeds;
 		}
-    	for (String value : values) {
+		for (String value : values) {
 			Forwarded forwarded = parse(value);
 			forwardeds.add(forwarded);
 		}
 		return forwardeds;
 	}
 
-	/* for testing */ static Forwarded parse(String value) {
+	/* for testing */
+	static Forwarded parse(String value) {
 		String[] pairs = StringUtils.tokenizeToStringArray(value, ";");
 
 		LinkedCaseInsensitiveMap<String> result = splitIntoCaseInsensitiveMap(pairs);
@@ -147,7 +149,7 @@ public class ForwardedHeadersFilter implements HttpHeadersFilter, Ordered {
 
 		private String quoteIfNeeded(String s) {
 			if (s != null && s.contains(":")) { //TODO: broaded quote
-				return "\""+s+"\"";
+				return "\"" + s + "\"";
 			}
 			return s;
 		}

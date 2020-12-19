@@ -23,9 +23,8 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import reactor.core.publisher.Mono;
 
 /**
- *
  * 网关过滤器接口
- *
+ * <p>
  * Contract for interception-style, chained processing of Web requests that may
  * be used to implement cross-cutting, application-agnostic requirements such
  * as security, timeouts, and others.
@@ -38,8 +37,9 @@ public interface GlobalFilter {
 	/**
 	 * Process the Web request and (optionally) delegate to the next
 	 * {@code WebFilter} through the given {@link GatewayFilterChain}.
+	 *
 	 * @param exchange the current server exchange
-	 * @param chain provides a way to delegate to the next filter
+	 * @param chain    provides a way to delegate to the next filter
 	 * @return {@code Mono<Void>} to indicate when request processing is complete
 	 */
 	Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain);
