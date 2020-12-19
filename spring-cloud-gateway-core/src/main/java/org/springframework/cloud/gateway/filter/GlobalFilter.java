@@ -23,6 +23,9 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import reactor.core.publisher.Mono;
 
 /**
+ *
+ * 网关过滤器接口
+ *
  * Contract for interception-style, chained processing of Web requests that may
  * be used to implement cross-cutting, application-agnostic requirements such
  * as security, timeouts, and others.

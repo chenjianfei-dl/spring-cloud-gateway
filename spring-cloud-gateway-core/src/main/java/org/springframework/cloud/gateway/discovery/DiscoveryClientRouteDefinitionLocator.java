@@ -36,7 +36,8 @@ import org.springframework.expression.spel.support.SimpleEvaluationContext;
 import org.springframework.util.StringUtils;
 
 /**
- * 从注册中心读取路由配置
+ *
+ * 获取注册在注册中心的服务列表，生成对应的 RouteDefinition 数组
  * TODO: change to RouteLocator? use java dsl
  *
  * @author Spencer Gibb

@@ -39,6 +39,9 @@ import org.springframework.web.server.WebHandler;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR;
 
 /**
+ * 过滤器链处理器
+ *
+ *
  * WebHandler that delegates to a chain of {@link GlobalFilter} instances and
  * {@link GatewayFilterFactory} instances then to the target {@link WebHandler}.
  *
@@ -83,7 +86,7 @@ public class FilteringWebHandler implements WebHandler {
 		AnnotationAwareOrderComparator.sort(combined);
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("Sorted gatewayFilterFactories: "+ combined);
+			logger.debug("Sorted gatewayFilterFactories: " + combined);
 		}
 
 		return new DefaultGatewayFilterChain(combined).filter(exchange);
@@ -122,14 +125,25 @@ public class FilteringWebHandler implements WebHandler {
 		}
 	}
 
+	/**
+	 * 网关过滤器适配器
+	 */
 	private static class GatewayFilterAdapter implements GatewayFilter {
-
+		/**
+		 * 委托的 GlobalFilter
+		 */
 		private final GlobalFilter delegate;
 
 		public GatewayFilterAdapter(GlobalFilter delegate) {
 			this.delegate = delegate;
 		}
 
+		/**
+		 * 使用 delegate 过滤请求
+		 * @param exchange the current server exchange
+		 * @param chain provides a way to delegate to the next filter
+		 * @return
+		 */
 		@Override
 		public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 			return this.delegate.filter(exchange, chain);
