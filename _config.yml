@@ -41,3 +41,5 @@ custom_gradle_template: true
 main_site_url: https://spring.io
 projects_site_url: https://projects.spring.io
 questions_url: https://spring.io/questions
+
+theme: jekyll-theme-cayman
