@@ -214,7 +214,6 @@ public class GatewayControllerEndpoint implements ApplicationEventPublisherAware
 	 * @return
 	 */
 	@PostMapping("/routes/{id}")
-	@SuppressWarnings("unchecked")
 	public Mono<ResponseEntity<Void>> save(@PathVariable String id, @RequestBody Mono<RouteDefinition> route) {
 		return this.routeDefinitionWriter.save(route.map(r -> {
 			r.setId(id);

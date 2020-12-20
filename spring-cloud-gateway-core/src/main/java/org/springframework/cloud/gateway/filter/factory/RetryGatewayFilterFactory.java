@@ -41,6 +41,9 @@ import org.springframework.http.HttpStatus.Series;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
 
+/**
+ * @author Jianfei.Chen
+ */
 public class RetryGatewayFilterFactory extends AbstractGatewayFilterFactory<RetryGatewayFilterFactory.RetryConfig> {
 
 	public static final String RETRY_ITERATION_KEY = "retry_iteration";

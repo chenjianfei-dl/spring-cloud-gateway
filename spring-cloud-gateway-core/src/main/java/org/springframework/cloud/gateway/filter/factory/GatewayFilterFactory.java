@@ -28,10 +28,11 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 /**
  * GatewayFilterFactory 职责就是生产 GatewayFilter
  *
+ * 同样继承了 ShortcutConfigurable 和 Configurable 接口，支持配置
+ *
  * @author Spencer Gibb
  */
 @FunctionalInterface
-//同样继承了 ShortcutConfigurable 和 Configurable 接口，支持配置
 public interface GatewayFilterFactory<C> extends ShortcutConfigurable, Configurable<C> {
 
 	String NAME_KEY = "name";
