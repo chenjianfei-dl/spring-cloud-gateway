@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<description>spring cloud gateway example</description>
+
+	<groupId>cn.iocoder.springboot.labs</groupId>
+	<artifactId>spring-cloud-gateway-example</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<properties>
+		<maven.compiler.source>8</maven.compiler.source>
+		<maven.compiler.target>8</maven.compiler.target>
+	</properties>
+
+	<modules>
+		<module>gateway-demo01</module>
+		<module>gateway-demo01-test</module>
+		<module>gateway-demo02-registry</module>
+		<module>gateway-demo03-config-apollo</module>
+		<module>gateway-demo03-config-nacos</module>
+		<module>gateway-demo04</module>
+		<module>gateway-demo05-custom-gateway-filter</module>
+		<module>gateway-demo06-rate-limiter</module>
+		<module>gateway-demo07-hystrix</module>
+		<module>gateway-demo07-sentinel</module>
+		<module>gateway-demo08-custom-global-filter</module>
+		<module>gateway-demo09-actuator</module>
+		<module>gateway-demo10-troubleshooting</module>
+		<module>labx-08-sc-user-service</module>
+	</modules>
+</project>

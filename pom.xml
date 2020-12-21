@@ -128,7 +128,8 @@
 		<module>spring-cloud-starter-gateway</module>
 		<module>spring-cloud-gateway-sample</module>
 		<module>docs</module>
-	</modules>
+        <module>spring-cloud-gateway-example</module>
+    </modules>
 
 	<profiles>
 		<profile>
